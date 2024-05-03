@@ -15,8 +15,20 @@ const url3 = urls.localPy + "classes/LuaAccumulatorControlBehavior.html";
 const url4 = urls.localPy + "classes/LuaTransportLine.html";
 const url5 = urls.localPy + "classes/LuaAchievementPrototyp5";
 
-let classes = {}
-let defines = { events: { type: "define", properties: {} } }
+let classes = {
+    defines: {
+        type: "define",
+        properties: {
+            events:
+            {
+                type: "define",
+                properties: {}
+            }
+        }
+    }
+}
+
+let defines = classes.defines.properties
 let events = defines.events.properties
 
 processMain()
