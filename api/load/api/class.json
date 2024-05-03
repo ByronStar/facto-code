@@ -1,0 +1,80 @@
+{
+  "defines": {
+    "type": "define",
+    "properties": {
+      "events": {
+        "type": "define",
+        "properties": {}
+      }
+    }
+  },
+  "LuaCommandProcessor": {
+    "name": "LuaCommandProcessor",
+    "type": "LuaCommandProcessor",
+    "properties": {
+      "add_command": {
+        "name": "add_command",
+        "doc": "Add a custom console command.",
+        "short": "Add a custom console command.",
+        "member": "add_command(name, help, function)",
+        "type": "function",
+        "args": {
+          "name": {
+            "name": "name",
+            "type": "string",
+            "doc": "The desired name of the command (case sensitive)."
+          },
+          "help": {
+            "name": "help",
+            "type": "LocalisedString",
+            "doc": "The localised help message. It will be shown to players using the /help command."
+          },
+          "function": {
+            "name": "function",
+            "type": "function(CustomCommandData)",
+            "doc": "The function that will be called when this command is invoked."
+          }
+        }
+      },
+      "remove_command": {
+        "name": "remove_command",
+        "type": "function",
+        "doc": "Remove a custom console command. Returns: Whether the command was successfully removed. Returns false if the command didn't exist.",
+        "short": "Remove a custom console command.",
+        "member": "remove_command(name)  → boolean",
+        "returns": "→ boolean",
+        "args": {
+          "name": {
+            "name": "name",
+            "type": "string",
+            "doc": "The name of the command to remove (case sensitive)."
+          }
+        }
+      },
+      "commands": {
+        "name": "commands",
+        "type": "string",
+        "mode": "[R]",
+        "doc": "Lists the custom commands registered by scripts through LuaCommandProcessor.",
+        "short": "Lists the custom commands registered by scripts through LuaCommandProcessor.",
+        "member": "commands  :: dictionary[string → LocalisedString] Read"
+      },
+      "game_commands": {
+        "name": "game_commands",
+        "type": "string",
+        "mode": "[R]",
+        "doc": "Lists the built-in commands of the core game. The wiki has an overview of these.",
+        "short": "Lists the built-in commands of the core game. [...]",
+        "member": "game_commands  :: dictionary[string → LocalisedString] Read"
+      },
+      "object_name": {
+        "name": "object_name",
+        "type": "string",
+        "mode": "[R]",
+        "doc": "This object's name.",
+        "short": "This object's name.",
+        "member": "object_name  :: string Read"
+      }
+    }
+  }
+}

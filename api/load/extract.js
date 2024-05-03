@@ -11,6 +11,7 @@ const urls = {
 const url1 = urls.localPy + "classes/LuaAISettings.html";
 const url2 = urls.localPy + "classes/LuaBootstrap.html";
 // Pages with issues
+const url6 = urls.localPy + "classes/LuaCommandProcessor.html";
 const url3 = urls.localPy + "classes/LuaAccumulatorControlBehavior.html";
 const url4 = urls.localPy + "classes/LuaTransportLine.html";
 const url5 = urls.localPy + "classes/LuaAchievementPrototyp5";
@@ -31,8 +32,8 @@ let classes = {
 let defines = classes.defines.properties
 let events = defines.events.properties
 
-processMain()
-// processClass(url2)
+// processMain()
+processClass('LuaCommandProcessor')
 // processClasses(urls.proxy + "classes.html")
 // processDefines()
 
@@ -113,7 +114,7 @@ function processClasses(url) {
             doc: "p:first",
             args: [
                 osmosis
-                    .find("div.scrollwrapper")
+                    .find("tr")
                     .set({
                         name: "span.docs-attribute-name",
                         type: "span.docs-attribute-type:first",
@@ -300,9 +301,9 @@ function processMain() {
         .error(data => console.log('ERR', data))
 }
 
-function processClass(url) {
+function processClass(clazz) {
     osmosis
-        .get(url)
+        .get(urls.localPy + "classes/" + clazz + ".html")
         .find("div.docs-content")
         .set({
             name: "h2 > a",
@@ -342,7 +343,7 @@ function processClass(url) {
             doc: "p:first",
             args: [
                 osmosis
-                    .find("div.scrollwrapper")
+                    .find("tr")
                     .set({
                         name: "span.docs-attribute-name",
                         type: "span.docs-attribute-type:first",
@@ -356,9 +357,15 @@ function processClass(url) {
             classes[data.class].properties[data.name].doc = data.doc.replace(/\n */g, " ")
             classes[data.class].properties[data.name].member = data.member.replace(/\n */g, " ")
 
+            if (classes[data.class].properties[data.name].member.includes('(')) {
+                classes[data.class].properties[data.name].type = 'function'
+            }
             data.args.forEach((arg, i) => {
                 if (arg.doc) {
                     arg.doc = arg.doc.replace(/\n */g, " ")
+                }
+                if (arg.type) {
+                    arg.type = arg.type.replace(/:: /, '')
                 }
             });
             let args = data.args.reduce((a, v) => ({ ...a, [v.name]: v }), {})
@@ -381,11 +388,42 @@ function processClass(url) {
             // classes[data.name] = data;
         })
         .done(function () {
-            saveData('./api/classes.json', classes)
+            saveData('./api/class.json', classes)
+            console.log("HI")
+            check(clazz)
             // console.log(JSON.stringify(classes, null, 2));
         })
         .log(data => console.log('LOG', data))
         .error(data => console.log('ERR', data))
+}
+
+function check(name) {
+    readData('./api/classesOrig.json').then(orig => {
+        console.log('DIFF', JSON.stringify(diff(orig[name], classes[name], ['doc', 'short', 'member']), null, 2))
+    })
+}
+
+function diff(obj1, obj2, ignore) {
+    ignore = ignore || []
+    const result = {};
+    if (Object.is(obj1, obj2)) {
+        return undefined;
+    }
+    if (!obj2 || typeof obj2 !== 'object') {
+        return obj2;
+    }
+    Object.keys(obj1 || {}).concat(Object.keys(obj2 || {})).filter(key => !ignore.includes(key)).forEach(key => {
+        if (obj2[key] !== obj1[key] && !Object.is(obj1[key], obj2[key])) {
+            result[key] = obj2[key];
+        }
+        if (typeof obj2[key] === 'object' && typeof obj1[key] === 'object') {
+            const value = diff(obj1[key], obj2[key], ignore);
+            if (value !== undefined) {
+                result[key] = value;
+            }
+        }
+    });
+    return result;
 }
 
 function saveData(file, data) {
