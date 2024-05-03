@@ -10,9 +10,11 @@ const vscode = require('vscode');
  */
 function activate(context) {
 
+	let factorioApiPath = context.asAbsolutePath("./api");
+
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "facto-code" is now active!');
+	console.log('facto-code', factorioApiPath);
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
