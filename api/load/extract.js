@@ -28,15 +28,16 @@ let events = defines.events.properties
 // processClass('LuaBootstrap')
 // processClass('LuaCommandProcessor')
 // Pages with issues
-processClass('LuaAccumulatorControlBehavior')
+// processClass('LuaAccumulatorControlBehavior')
 // processClass('LuaTransportLine')
 // processClass('LuaAchievementPrototyp5')
-// processClasses(urls.proxy + "classes.html")
-// processDefines()
 
-function processClasses(url) {
+processClasses(urls.proxy)
+// processDefines(urls.localPy)
+
+function processClasses(proxy) {
     osmosis
-        .get(url)
+        .get(proxy + "classes.html")
         .config({
             user_agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4.1 Safari/605.1.15',
             tries: 1,
@@ -128,14 +129,19 @@ function processClasses(url) {
                 }
                 classes[data.class].properties[data.name].member = data.member.replace(/\n */g, " ")
 
+                if (classes[data.class].properties[data.name].member.includes('(')) {
+                    classes[data.class].properties[data.name].type = 'function'
+                }
                 data.args.forEach((arg, i) => {
                     if (arg.doc) {
                         arg.doc = arg.doc.replace(/\n */g, " ")
                     }
+                    if (arg.type) {
+                        arg.type = arg.type.replace(/:: /, '')
+                    }
                 });
                 let args = data.args.reduce((a, v) => ({ ...a, [v.name]: v }), {})
                 if (args.undefined) {
-                    // console.log(data.name, args.undefined)
                     if (args.undefined.type) {
                         classes[data.class].properties[data.name].returns = args.undefined.type
                         if (args.undefined.doc) {
@@ -157,16 +163,17 @@ function processClasses(url) {
         })
         .done(function () {
             // console.log(JSON.stringify(classes, null, 2));
-            saveData('./api/classes.json', classes)
+            // saveData('./api/classes.json', classes)
+            processDefines(proxy)
         })
         // .data(data => console.log('DAT', data))
         .log(data => console.log('LOG', data))
         .error(data => console.log('ERR', data))
 }
 
-function processDefines() {
+function processDefines(proxy) {
     osmosis
-        .get((urls.localPy + "defines.html"))
+        .get((proxy + "defines.html"))
         .find("div.ml16.mb16 > div")
         .set({
             name: "h3",
@@ -201,16 +208,16 @@ function processDefines() {
         })
         .done(function () {
             // console.log(JSON.stringify(defines, null, 2));
-            processEvents()
+            processEvents(proxy)
             // saveData('./api/defines.json', defines)
         })
         .log(data => console.log('LOG', data))
         .error(data => console.log('ERR', data))
 }
 
-function processEvents() {
+function processEvents(proxy) {
     osmosis
-        .get((urls.localPy + "events.html"))
+        .get((proxy + "events.html"))
         .find("div.ml16.mb16 > div")
         .set({
             name: "h3",
@@ -244,7 +251,7 @@ function processEvents() {
         })
         .done(function () {
             // console.log(JSON.stringify(defines, null, 2));
-            saveData('./api/defines.json', defines)
+            saveData('./api/classes.json', classes)
         })
         .log(data => console.log('LOG', data))
         .error(data => console.log('ERR', data))
@@ -354,37 +361,41 @@ function processClass(clazz) {
         })
         .data(data => {
             // console.log('DAT', data)
-            classes[data.class].properties[data.name].short = classes[data.class].properties[data.name].doc
-            if (data.doc) {
-                classes[data.class].properties[data.name].doc = data.doc.replace(/\n */g, " ")
-            }
-            classes[data.class].properties[data.name].member = data.member.replace(/\n */g, " ")
+            if (classes[data.class].properties[data.name]) {
+                if (data.doc) {
+                    classes[data.class].properties[data.name].short = classes[data.class].properties[data.name].doc
+                    classes[data.class].properties[data.name].doc = data.doc.replace(/\n */g, " ")
+                }
+                classes[data.class].properties[data.name].member = data.member.replace(/\n */g, " ")
 
-            if (classes[data.class].properties[data.name].member.includes('(')) {
-                classes[data.class].properties[data.name].type = 'function'
-            }
-            data.args.forEach((arg, i) => {
-                if (arg.doc) {
-                    arg.doc = arg.doc.replace(/\n */g, " ")
+                if (classes[data.class].properties[data.name].member.includes('(')) {
+                    classes[data.class].properties[data.name].type = 'function'
                 }
-                if (arg.type) {
-                    arg.type = arg.type.replace(/:: /, '')
-                }
-            });
-            let args = data.args.reduce((a, v) => ({ ...a, [v.name]: v }), {})
-            if (args.undefined) {
-                if (args.undefined.type) {
-                    classes[data.class].properties[data.name].returns = args.undefined.type
-                    if (args.undefined.doc) {
-                        classes[data.class].properties[data.name].doc += " Returns: " + args.undefined.doc
-                    } else {
-                        console.log(data.name, args.undefined)
+                data.args.forEach((arg, i) => {
+                    if (arg.doc) {
+                        arg.doc = arg.doc.replace(/\n */g, " ")
                     }
+                    if (arg.type) {
+                        arg.type = arg.type.replace(/:: /, '')
+                    }
+                });
+                let args = data.args.reduce((a, v) => ({ ...a, [v.name]: v }), {})
+                if (args.undefined) {
+                    if (args.undefined.type) {
+                        classes[data.class].properties[data.name].returns = args.undefined.type
+                        if (args.undefined.doc) {
+                            classes[data.class].properties[data.name].doc += " Returns: " + args.undefined.doc
+                        } else {
+                            console.log(data.name, args.undefined)
+                        }
+                    }
+                    delete args.undefined
                 }
-                delete args.undefined
-            }
-            if (Object.keys(args).length != 0) {
-                classes[data.class].properties[data.name].args = args
+                if (Object.keys(args).length != 0) {
+                    classes[data.class].properties[data.name].args = args
+                }
+            } else {
+                console.log('???', data)
             }
 
             // classes[data.name] = data;
