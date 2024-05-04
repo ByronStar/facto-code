@@ -1,0 +1,521 @@
+{
+  "defines": {
+    "type": "define",
+    "properties": {
+      "events": {
+        "type": "define",
+        "properties": {}
+      }
+    }
+  },
+  "LuaBootstrap": {
+    "name": "LuaBootstrap",
+    "type": "LuaBootstrap",
+    "properties": {
+      "on_init": {
+        "name": "on_init",
+        "doc": "Register a function to be run on mod initialization. This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to LuaGameScript and the global table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.",
+        "short": "Register a function to be run on mod initialization. [...]",
+        "member": "on_init(handler)",
+        "type": "function",
+        "args": {
+          "handler": {
+            "name": "handler",
+            "type": "function() or nil",
+            "doc": "The handler for this event. Passing nil will unregister it."
+          }
+        }
+      },
+      "on_load": {
+        "name": "on_load",
+        "doc": "Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session.",
+        "short": "Register a function to be run on save load. [...]",
+        "member": "on_load(handler)",
+        "type": "function",
+        "args": {
+          "handler": {
+            "name": "handler",
+            "type": "function() or nil",
+            "doc": "The handler for this event. Passing nil will unregister it."
+          }
+        }
+      },
+      "on_configuration_changed": {
+        "name": "on_configuration_changed",
+        "doc": "Register a function to be run when mod configuration changes. This is called when the game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, when any prototypes have been added or removed, or when a migration was applied. It allows the mod to make any changes it deems appropriate to both the data structures in its global table or to the game state through LuaGameScript.",
+        "short": "Register a function to be run when mod configuration changes. [...]",
+        "member": "on_configuration_changed(handler)",
+        "type": "function",
+        "args": {
+          "handler": {
+            "name": "handler",
+            "type": "function(ConfigurationChangedData) or nil",
+            "doc": "The handler for this event. Passing nil will unregister it."
+          }
+        }
+      },
+      "on_event": {
+        "name": "on_event",
+        "doc": "Register a handler to run on the specified event(s). Each mod can only register once for every event, as any additional registration will overwrite the previous one. This holds true even if different filters are used for subsequent registrations.",
+        "short": "Register a handler to run on the specified event(s). [...]",
+        "member": "on_event(event, handler, filters?)",
+        "type": "function",
+        "args": {
+          "event": {
+            "name": "event",
+            "type": "defines.events or string or array[defines.events or string]",
+            "doc": "The event(s) or custom-input to invoke the handler on."
+          },
+          "handler": {
+            "name": "handler",
+            "type": "function(EventData) or nil",
+            "doc": "The handler for this event. Passing nil will unregister it."
+          },
+          "filters": {
+            "name": "filters",
+            "type": "EventFilter?",
+            "doc": "The filters for this event. Can only be used when registering for individual events."
+          }
+        }
+      },
+      "on_nth_tick": {
+        "name": "on_nth_tick",
+        "doc": "Register a handler to run every nth-tick(s). When the game is on tick 0 it will trigger all registered handlers.",
+        "short": "Register a handler to run every nth-tick(s). [...]",
+        "member": "on_nth_tick(tick, handler)",
+        "type": "function",
+        "args": {
+          "tick": {
+            "name": "tick",
+            "type": "uint or array[uint] or nil",
+            "doc": "The nth-tick(s) to invoke the handler on. Passing nil as the only parameter will unregister all nth-tick handlers."
+          },
+          "handler": {
+            "name": "handler",
+            "type": "function(NthTickEventData) or nil",
+            "doc": "The handler to run. Passing nil will unregister it for the provided nth-tick(s)."
+          }
+        }
+      },
+      "register_on_entity_destroyed": {
+        "name": "register_on_entity_destroyed",
+        "type": "function",
+        "doc": "Registers an entity so that after it's destroyed, on_entity_destroyed is called. Once an entity is registered, it stays registered until it is actually destroyed, even through save/load cycles. The registration is global across all mods, meaning once one mod registers an entity, all mods listening to on_entity_destroyed will receive the event when it is destroyed. Registering the same entity multiple times will still only fire the destruction event once, and will return the same registration number. Returns: The registration number. It is used to identify the entity in the on_entity_destroyed event.",
+        "short": "Registers an entity so that after it's destroyed, on_entity_destroyed is called. [...]",
+        "member": "register_on_entity_destroyed(entity)  → uint64",
+        "returns": "→ uint64",
+        "args": {
+          "entity": {
+            "name": "entity",
+            "type": "LuaEntity",
+            "doc": "The entity to register."
+          }
+        }
+      },
+      "register_metatable": {
+        "name": "register_metatable",
+        "doc": "Register a metatable to have linkage recorded and restored when saving/loading. The metatable itself will not be saved. Instead, only the linkage to a registered metatable is saved, and the metatable registered under that name will be used when loading the table.",
+        "short": "Register a metatable to have linkage recorded and restored when saving/loading. [...]",
+        "member": "register_metatable(name, metatable)",
+        "type": "function",
+        "args": {
+          "name": {
+            "name": "name",
+            "type": "string",
+            "doc": "The name of this metatable. Names must be unique per mod."
+          },
+          "metatable": {
+            "name": "metatable",
+            "type": "table",
+            "doc": "The metatable to register."
+          }
+        }
+      },
+      "generate_event_name": {
+        "name": "generate_event_name",
+        "type": "function",
+        "doc": "Generate a new, unique event ID that can be used to raise custom events with LuaBootstrap::raise_event. Returns: The newly generated event ID.",
+        "short": "Generate a new, unique event ID that can be used to raise custom events with LuaBootstrap::raise_event.",
+        "member": "generate_event_name()  → uint",
+        "returns": "→ uint"
+      },
+      "get_event_handler": {
+        "name": "get_event_handler",
+        "type": "function",
+        "doc": "Find the event handler for an event. Returns: Reference to the function currently registered as the handler, if it was found.",
+        "short": "Find the event handler for an event.",
+        "member": "get_event_handler(event)  → function(EventData)?",
+        "returns": "→ function(EventData)?",
+        "args": {
+          "event": {
+            "name": "event",
+            "type": "uint",
+            "doc": "The event identifier to get a handler for."
+          }
+        }
+      },
+      "get_event_order": {
+        "name": "get_event_order",
+        "type": "function",
+        "doc": "Gets the mod event order as a string.",
+        "short": "Gets the mod event order as a string.",
+        "member": "get_event_order()  → string"
+      },
+      "set_event_filter": {
+        "name": "set_event_filter",
+        "doc": "Sets the filters for the given event. The filters are only retained when set after the actual event registration, because registering for an event with different or no filters will overwrite previously set ones.",
+        "short": "Sets the filters for the given event. [...]",
+        "member": "set_event_filter(event, filters?)",
+        "type": "function",
+        "args": {
+          "event": {
+            "name": "event",
+            "type": "uint",
+            "doc": "ID of the event to filter."
+          },
+          "filters": {
+            "name": "filters",
+            "type": "EventFilter?",
+            "doc": "The filters or nil to clear them."
+          }
+        }
+      },
+      "get_event_filter": {
+        "name": "get_event_filter",
+        "type": "function",
+        "doc": "Gets the filters for the given event. Returns: The filters or nil if none are defined.",
+        "short": "Gets the filters for the given event.",
+        "member": "get_event_filter(event)  → EventFilter?",
+        "returns": "→ EventFilter?",
+        "args": {
+          "event": {
+            "name": "event",
+            "type": "uint",
+            "doc": "ID of the event to get."
+          }
+        }
+      },
+      "get_prototype_history": {
+        "name": "get_prototype_history",
+        "type": "function",
+        "doc": "Gets the prototype history for the given type and name.",
+        "short": "Gets the prototype history for the given type and name.",
+        "member": "get_prototype_history(type, name)  → PrototypeHistory",
+        "args": {
+          "type": {
+            "name": "type",
+            "type": "string",
+            "doc": ""
+          },
+          "name": {
+            "name": "name",
+            "type": "string",
+            "doc": ""
+          }
+        }
+      },
+      "raise_event": {
+        "name": "raise_event",
+        "doc": "Raise an event. Only events generated with LuaBootstrap::generate_event_name and the following can be raised:",
+        "short": "Raise an event. [...]",
+        "member": "raise_event(event, data)",
+        "type": "function",
+        "args": {
+          "event": {
+            "name": "event",
+            "type": "uint",
+            "doc": "ID of the event to raise."
+          },
+          "data": {
+            "name": "data",
+            "type": "table",
+            "doc": "Table with extra data that will be passed to the event handler. Any invalid LuaObjects will silently stop the event from being raised."
+          }
+        }
+      },
+      "raise_console_chat": {
+        "name": "raise_console_chat",
+        "doc": "The player doing the chatting.",
+        "member": "raise_console_chat{player_index=…, message=…}",
+        "args": {
+          "player_index": {
+            "name": "player_index",
+            "type": "uint",
+            "doc": "The player doing the chatting."
+          },
+          "message": {
+            "name": "message",
+            "type": "string",
+            "doc": "The chat message to send."
+          },
+          "on_console_chat": {
+            "name": "on_console_chat",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_player_crafted_item": {
+        "name": "raise_player_crafted_item",
+        "doc": "The item that has been crafted.",
+        "member": "raise_player_crafted_item{item_stack=…, player_index=…, recipe=…}",
+        "args": {
+          "item_stack": {
+            "name": "item_stack",
+            "type": "LuaItemStack",
+            "doc": "The item that has been crafted."
+          },
+          "player_index": {
+            "name": "player_index",
+            "type": "uint",
+            "doc": "The player doing the crafting."
+          },
+          "recipe": {
+            "name": "recipe",
+            "type": "LuaRecipe",
+            "doc": "The recipe used to craft this item."
+          },
+          "on_player_crafted_item": {
+            "name": "on_player_crafted_item",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_player_fast_transferred": {
+        "name": "raise_player_fast_transferred",
+        "doc": "The player transferred from or to.",
+        "member": "raise_player_fast_transferred{player_index=…, entity=…, from_player=…, is_split=…}",
+        "args": {
+          "player_index": {
+            "name": "player_index",
+            "type": "uint",
+            "doc": "The player transferred from or to."
+          },
+          "entity": {
+            "name": "entity",
+            "type": "LuaEntity",
+            "doc": "The entity transferred from or to."
+          },
+          "from_player": {
+            "name": "from_player",
+            "type": "boolean",
+            "doc": "Whether the transfer was from player to entity. If false, the transfer was from entity to player."
+          },
+          "is_split": {
+            "name": "is_split",
+            "type": "boolean",
+            "doc": "Whether the transfer was a split action (half stack)."
+          },
+          "on_player_fast_transferred": {
+            "name": "on_player_fast_transferred",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_biter_base_built": {
+        "name": "raise_biter_base_built",
+        "doc": "The entity that was built.",
+        "member": "raise_biter_base_built{entity=…}",
+        "args": {
+          "entity": {
+            "name": "entity",
+            "type": "LuaEntity",
+            "doc": "The entity that was built."
+          },
+          "on_biter_base_built": {
+            "name": "on_biter_base_built",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_market_item_purchased": {
+        "name": "raise_market_item_purchased",
+        "doc": "The player who did the purchasing.",
+        "member": "raise_market_item_purchased{player_index=…, market=…, offer_index=…, count=…}",
+        "args": {
+          "player_index": {
+            "name": "player_index",
+            "type": "uint",
+            "doc": "The player who did the purchasing."
+          },
+          "market": {
+            "name": "market",
+            "type": "LuaEntity",
+            "doc": "The market entity."
+          },
+          "offer_index": {
+            "name": "offer_index",
+            "type": "uint",
+            "doc": "The index of the offer purchased."
+          },
+          "count": {
+            "name": "count",
+            "type": "uint",
+            "doc": "The amount of offers purchased."
+          },
+          "on_market_item_purchased": {
+            "name": "on_market_item_purchased",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_script_built": {
+        "name": "raise_script_built",
+        "doc": "The entity that has been built.",
+        "member": "raise_script_built{entity=…}",
+        "args": {
+          "entity": {
+            "name": "entity",
+            "type": "LuaEntity",
+            "doc": "The entity that has been built."
+          },
+          "script_raised_built": {
+            "name": "script_raised_built",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_script_destroy": {
+        "name": "raise_script_destroy",
+        "doc": "The entity that was destroyed.",
+        "member": "raise_script_destroy{entity=…}",
+        "args": {
+          "entity": {
+            "name": "entity",
+            "type": "LuaEntity",
+            "doc": "The entity that was destroyed."
+          },
+          "script_raised_destroy": {
+            "name": "script_raised_destroy",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_script_revive": {
+        "name": "raise_script_revive",
+        "doc": "The entity that was revived.",
+        "member": "raise_script_revive{entity=…, tags?=…}",
+        "args": {
+          "entity": {
+            "name": "entity",
+            "type": "LuaEntity",
+            "doc": "The entity that was revived."
+          },
+          "tags": {
+            "name": "tags",
+            "type": "Tags?",
+            "doc": "The tags associated with this entity, if any."
+          },
+          "script_raised_revive": {
+            "name": "script_raised_revive",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_script_teleported": {
+        "name": "raise_script_teleported",
+        "doc": "The entity that was teleported.",
+        "member": "raise_script_teleported{entity=…, old_surface_index=…, old_position=…}",
+        "args": {
+          "entity": {
+            "name": "entity",
+            "type": "LuaEntity",
+            "doc": "The entity that was teleported."
+          },
+          "old_surface_index": {
+            "name": "old_surface_index",
+            "type": "uint8",
+            "doc": "The entity's surface before the teleportation."
+          },
+          "old_position": {
+            "name": "old_position",
+            "type": "MapPosition",
+            "doc": "The entity's position before the teleportation."
+          },
+          "script_raised_teleported": {
+            "name": "script_raised_teleported",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "raise_script_set_tiles": {
+        "name": "raise_script_set_tiles",
+        "doc": "The surface whose tiles have been changed.",
+        "member": "raise_script_set_tiles{surface_index=…, tiles=…}",
+        "args": {
+          "surface_index": {
+            "name": "surface_index",
+            "type": "uint",
+            "doc": "The surface whose tiles have been changed."
+          },
+          "tiles": {
+            "name": "tiles",
+            "type": "array[Tile]",
+            "doc": "The tiles that have been changed."
+          },
+          "script_raised_set_tiles": {
+            "name": "script_raised_set_tiles",
+            "doc": "Raised with the provided arguments."
+          }
+        }
+      },
+      "mod_name": {
+        "name": "mod_name",
+        "type": "string",
+        "mode": "[R]",
+        "doc": "The name of the mod from the environment this is used in.",
+        "short": "The name of the mod from the environment this is used in.",
+        "member": "mod_name  :: string Read"
+      },
+      "level": {
+        "name": "level",
+        "mode": "[R]",
+        "doc": "Information about the currently running scenario/campaign/tutorial.",
+        "short": "Information about the currently running scenario/campaign/tutorial.",
+        "member": "level  :: table Read",
+        "args": {
+          "is_simulation": {
+            "name": "is_simulation",
+            "type": "boolean?",
+            "doc": "Is this level a simulation? (The main menu and 'Tips and tricks' use simulations)"
+          },
+          "is_tutorial": {
+            "name": "is_tutorial",
+            "type": "boolean?",
+            "doc": "Is this level a tutorial?"
+          },
+          "campaign_name": {
+            "name": "campaign_name",
+            "type": "string?",
+            "doc": "The campaign name if any."
+          },
+          "level_name": {
+            "name": "level_name",
+            "type": "string",
+            "doc": "The level name."
+          },
+          "mod_name": {
+            "name": "mod_name",
+            "type": "string?",
+            "doc": "The mod name if any."
+          }
+        }
+      },
+      "active_mods": {
+        "name": "active_mods",
+        "type": "string",
+        "mode": "[R]",
+        "doc": "A dictionary listing the names of all currently active mods and mapping them to their version.",
+        "short": "A dictionary listing the names of all currently active mods and mapping them to their version.",
+        "member": "active_mods  :: dictionary[string → string] Read"
+      },
+      "object_name": {
+        "name": "object_name",
+        "type": "string",
+        "mode": "[R]",
+        "doc": "This object's name.",
+        "short": "This object's name.",
+        "member": "object_name  :: string Read"
+      }
+    }
+  }
+}

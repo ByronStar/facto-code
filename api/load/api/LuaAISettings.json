@@ -1,0 +1,72 @@
+{
+  "defines": {
+    "type": "define",
+    "properties": {
+      "events": {
+        "type": "define",
+        "properties": {}
+      }
+    }
+  },
+  "LuaAISettings": {
+    "name": "LuaAISettings",
+    "type": "LuaAISettings",
+    "properties": {
+      "help": {
+        "name": "help",
+        "type": "function",
+        "doc": "All methods and properties that this object supports.",
+        "short": "All methods and properties that this object supports.",
+        "member": "help()  → string"
+      },
+      "allow_destroy_when_commands_fail": {
+        "name": "allow_destroy_when_commands_fail",
+        "type": "boolean",
+        "mode": "[RW]",
+        "doc": "If enabled, units that repeatedly fail to succeed at commands will be destroyed.",
+        "short": "If enabled, units that repeatedly fail to succeed at commands will be destroyed.",
+        "member": "allow_destroy_when_commands_fail  :: boolean Read/Write"
+      },
+      "allow_try_return_to_spawner": {
+        "name": "allow_try_return_to_spawner",
+        "type": "boolean",
+        "mode": "[RW]",
+        "doc": "If enabled, units that have nothing else to do will attempt to return to a spawner.",
+        "short": "If enabled, units that have nothing else to do will attempt to return to a spawner.",
+        "member": "allow_try_return_to_spawner  :: boolean Read/Write"
+      },
+      "do_separation": {
+        "name": "do_separation",
+        "type": "boolean",
+        "mode": "[RW]",
+        "doc": "If enabled, units will try to separate themselves from nearby friendly units.",
+        "short": "If enabled, units will try to separate themselves from nearby friendly units.",
+        "member": "do_separation  :: boolean Read/Write"
+      },
+      "path_resolution_modifier": {
+        "name": "path_resolution_modifier",
+        "type": "int8",
+        "mode": "[RW]",
+        "doc": "Defines how coarse the pathfinder's grid is, where smaller values mean a coarser grid. Defaults to 0, which equals a resolution of 1x1 tiles, centered on tile centers. Values range from -8 to 8 inclusive, where each integer increment doubles/halves the resolution. So, a resolution of -8 equals a grid of 256x256 tiles, and a resolution of 8 equals 1/256 of a tile.",
+        "short": "Defines how coarse the pathfinder's grid is, where smaller values mean a coarser grid. [...]",
+        "member": "path_resolution_modifier :: int8 Read/Write"
+      },
+      "valid": {
+        "name": "valid",
+        "type": "boolean",
+        "mode": "[R]",
+        "doc": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be false. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
+        "short": "Is this object valid? [...]",
+        "member": "valid  :: boolean Read"
+      },
+      "object_name": {
+        "name": "object_name",
+        "type": "string",
+        "mode": "[R]",
+        "doc": "The class name of this object. Available even when valid is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
+        "short": "The class name of this object. [...]",
+        "member": "object_name  :: string Read"
+      }
+    }
+  }
+}

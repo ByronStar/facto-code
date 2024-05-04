@@ -7,15 +7,6 @@ const urls = {
     localPy: "http://localhost:8000/", // python3 -m http.server
 }
 
-// Local test pages for single class
-const url1 = urls.localPy + "classes/LuaAISettings.html";
-const url2 = urls.localPy + "classes/LuaBootstrap.html";
-// Pages with issues
-const url6 = urls.localPy + "classes/LuaCommandProcessor.html";
-const url3 = urls.localPy + "classes/LuaAccumulatorControlBehavior.html";
-const url4 = urls.localPy + "classes/LuaTransportLine.html";
-const url5 = urls.localPy + "classes/LuaAchievementPrototyp5";
-
 let classes = {
     defines: {
         type: "define",
@@ -33,7 +24,13 @@ let defines = classes.defines.properties
 let events = defines.events.properties
 
 // processMain()
-processClass('LuaCommandProcessor')
+// processClass('LuaAISettings')
+// processClass('LuaBootstrap')
+// processClass('LuaCommandProcessor')
+// Pages with issues
+processClass('LuaAccumulatorControlBehavior')
+// processClass('LuaTransportLine')
+// processClass('LuaAchievementPrototyp5')
 // processClasses(urls.proxy + "classes.html")
 // processDefines()
 
@@ -308,6 +305,7 @@ function processClass(clazz) {
         .set({
             name: "h2 > a",
             type: "h2 > a",
+            inherits: ["td:contains('Inherited from')"],
             properties: [
                 osmosis
                     .find("div.class-attribute-table tr:not(.tr-separate-description)")
@@ -332,6 +330,9 @@ function processClass(clazz) {
                 }
             });
             data.properties = data.properties.reduce((a, v) => ({ ...a, [v.name]: v }), {})
+            if (data.properties.undefined) {
+                delete data.properties.undefined
+            }
             classes[data.name] = data;
             // next(context.querySelector("div.ml16.mb16"), { class: data.name });
             next(context, { class: data.name });
@@ -354,7 +355,9 @@ function processClass(clazz) {
         .data(data => {
             // console.log('DAT', data)
             classes[data.class].properties[data.name].short = classes[data.class].properties[data.name].doc
-            classes[data.class].properties[data.name].doc = data.doc.replace(/\n */g, " ")
+            if (data.doc) {
+                classes[data.class].properties[data.name].doc = data.doc.replace(/\n */g, " ")
+            }
             classes[data.class].properties[data.name].member = data.member.replace(/\n */g, " ")
 
             if (classes[data.class].properties[data.name].member.includes('(')) {
@@ -370,7 +373,6 @@ function processClass(clazz) {
             });
             let args = data.args.reduce((a, v) => ({ ...a, [v.name]: v }), {})
             if (args.undefined) {
-                // console.log(data.name, args.undefined)
                 if (args.undefined.type) {
                     classes[data.class].properties[data.name].returns = args.undefined.type
                     if (args.undefined.doc) {
@@ -388,8 +390,7 @@ function processClass(clazz) {
             // classes[data.name] = data;
         })
         .done(function () {
-            saveData('./api/class.json', classes)
-            console.log("HI")
+            saveData('./api/' + clazz + '.json', classes)
             check(clazz)
             // console.log(JSON.stringify(classes, null, 2));
         })
