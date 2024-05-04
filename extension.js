@@ -43,33 +43,34 @@ class FactoCompletion {
 			let words = match.replaceAll(/\[[^\]]*\]/g, '').split('.')
 			words.pop()
 			const api = this.findApi(words);
-			console.log('facto-code', api, Object.keys(api.properties).length)
+			console.log('facto-code', words, api, Object.keys(api.properties).length)
 			if (!api || !api.properties) {
 				return undefined;
 			}
 			let completionItems = Object.keys(api.properties).map(member => this.createCompletionItem(api.properties[member], member));
-			// console.log('facto-code', completionItems)
-			// return suggestions;
+			console.log('facto-code', completionItems.length)
+			return completionItems;
 		} else {
 			// return { properties: this.classes }
 		}
 		return undefined
 	}
 
-	createCompletionItem(member, key) {
-        const { doc, name, mode } = member;
+	createCompletionItem(props, key) {
+		console.log(props)
+        const { doc, name, mode } = props;
         let completionItem = Object.assign(new vscode.CompletionItem(key), {
-            detail: member.type,
+            detail: props.type,
             documentation: new vscode.MarkdownString([doc, mode].filter(Boolean).join("\n\n")),
             kind: vscode.CompletionItemKind.Property
         });
-        if (member.type === "function") {
+        if (props.type === "function") {
             Object.assign(completionItem, {
                 detail: name,
                 kind: vscode.CompletionItemKind.Function
             });
         }
-        else if (member.type === "define") {
+        else if (props.type === "define") {
             Object.assign(completionItem, {
                 kind: vscode.CompletionItemKind.Constant
             });
