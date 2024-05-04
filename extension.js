@@ -26,9 +26,7 @@ class FactoCompletion {
 		readData(path + '/classes.json').then(data => {
 			this.classes = data
 			Object.keys(apiKeysMap).forEach(key => {
-				console.log(key)
 				if (this.classes[apiKeysMap[key]]) {
-					console.log(apiKeysMap[key])
 					this.classes[key] = this.classes[apiKeysMap[key]]
 				}
 			})
@@ -38,7 +36,7 @@ class FactoCompletion {
 	provideCompletionItems(document, position, token, context) {
 		const linePrefix = document.lineAt(position).text.slice(0, position.character);
 		console.log(linePrefix)
-		let match = linePrefix.match(/[\w\[\]]+\.[\w\[\]\.]*/g).pop()
+		let match = (linePrefix.match(/[\w\[\]]+\.[\w\[\]\.]*/g) || []).pop()
 		if (match) {
 			let words = match.replaceAll(/\[[^\]]*\]/g, '').split('.')
 			words.pop()
@@ -48,16 +46,13 @@ class FactoCompletion {
 				return undefined;
 			}
 			let completionItems = Object.keys(api.properties).map(member => this.createCompletionItem(api.properties[member], member));
-			console.log('facto-code', completionItems.length)
+			console.log('facto-code', completionItems.length, completionItems.map(c => c.detail))
 			return completionItems;
-		} else {
-			// return { properties: this.classes }
 		}
 		return undefined
 	}
 
 	createCompletionItem(props, key) {
-		console.log(props)
         const { doc, name, mode } = props;
         let completionItem = Object.assign(new vscode.CompletionItem(key), {
             detail: props.type,

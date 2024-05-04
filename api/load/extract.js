@@ -32,8 +32,71 @@ let events = defines.events.properties
 // processClass('LuaTransportLine')
 // processClass('LuaAchievementPrototyp5')
 
-processClasses(urls.proxy)
+// processClasses(urls.proxy)
 // processDefines(urls.localPy)
+
+test()
+
+function test() {
+    const apiKeysMap = {
+        game: "LuaGameScript",
+        script: "LuaBootstrap",
+        remote: "LuaRemote",
+        commands: "LuaCommandProcessor",
+        player: "LuaPlayer",
+        entity: "LuaEntity",
+        inventory: "LuaInventory",
+        gui: "LuaGui",
+        force: "LuaForce",
+        style: "LuaStyle",
+        tile: "LuaTile",
+    };
+    function findApi(words, classes) {
+        console.log(words)
+        let api = classes[words.shift()];
+        if (!api) {
+            return null;
+        }
+        if (!api.properties || words.length === 0) {
+            return api;
+        }
+        let props = api.properties;
+        words.some(word => {
+            api = props[word];
+            // Not found
+            if (!api) {
+                return true
+            }
+            // First try traverse it's own properties
+            if (api.properties) {
+                props = api.properties;
+            } else {
+                // Then the complete type list
+                let parentType = api.type;
+                // Special handling for defines
+                if (/defines/.test(parentType)) {
+                    let [_, defineName] = parentType.split(".");
+                    api = defineName && this.classes.defines[defineName] ? this.classes.defines[defineName].properties : null
+                    return true
+                }
+                api = this.classes[parentType];
+                if (api && api.properties) {
+                    props = api.properties;
+                }
+            }
+        })
+        return api;
+    }
+    readData('./api/classes.json').then(classes => {
+        Object.keys(apiKeysMap).forEach(key => {
+            if (classes[apiKeysMap[key]]) {
+                classes[key] = classes[apiKeysMap[key]]
+            }
+        })
+        console.log(Object.keys(classes['LuaGameScript'].properties))
+        // console.log(findApi(['game'], classes))
+    })
+}
 
 function processClasses(proxy) {
     osmosis
