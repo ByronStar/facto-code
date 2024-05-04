@@ -32,10 +32,10 @@ let events = defines.events.properties
 // processClass('LuaTransportLine')
 // processClass('LuaAchievementPrototyp5')
 
-// processClasses(urls.proxy)
+processClasses(urls.proxy)
 // processDefines(urls.localPy)
 
-test()
+// test()
 
 function test() {
     const apiKeysMap = {
@@ -139,6 +139,7 @@ function processClasses(proxy) {
         .set({
             name: "h2 > a",
             type: "h2 > a",
+            doc: "p:first",
             inherits: ["td:contains('Inherited from')"],
             properties: [
                 osmosis
@@ -375,6 +376,7 @@ function processClass(clazz) {
         .set({
             name: "h2 > a",
             type: "h2 > a",
+            doc: "p:first",
             inherits: ["td:contains('Inherited from')"],
             properties: [
                 osmosis
@@ -465,7 +467,7 @@ function processClass(clazz) {
         })
         .done(function () {
             saveData('./api/' + clazz + '.json', classes)
-            check(clazz)
+            // check(clazz)
             // console.log(JSON.stringify(classes, null, 2));
         })
         .log(data => console.log('LOG', data))

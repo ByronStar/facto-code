@@ -11,6 +11,8 @@
   "LuaAISettings": {
     "name": "LuaAISettings",
     "type": "LuaAISettings",
+    "doc": "Collection of settings for overriding default ai behavior.",
+    "inherits": [],
     "properties": {
       "help": {
         "name": "help",

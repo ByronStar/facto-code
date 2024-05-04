@@ -3658,6 +3658,7 @@
   "LuaAISettings": {
     "name": "LuaAISettings",
     "type": "LuaAISettings",
+    "doc": "Collection of settings for overriding default ai behavior.",
     "inherits": [],
     "properties": {
       "help": {
@@ -3720,6 +3721,7 @@
   "LuaAccumulatorControlBehavior": {
     "name": "LuaAccumulatorControlBehavior",
     "type": "LuaAccumulatorControlBehavior",
+    "doc": "Control behavior for accumulators.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -3758,6 +3760,7 @@
   "LuaAchievementPrototype": {
     "name": "LuaAchievementPrototype",
     "type": "LuaAchievementPrototype",
+    "doc": "Prototype of a achievement.",
     "inherits": [],
     "properties": {
       "help": {
@@ -3828,6 +3831,7 @@
   "LuaAmmoCategoryPrototype": {
     "name": "LuaAmmoCategoryPrototype",
     "type": "LuaAmmoCategoryPrototype",
+    "doc": "Prototype of a ammo category.",
     "inherits": [],
     "properties": {
       "help": {
@@ -3892,6 +3896,7 @@
   "LuaArithmeticCombinatorControlBehavior": {
     "name": "LuaArithmeticCombinatorControlBehavior",
     "type": "LuaArithmeticCombinatorControlBehavior",
+    "doc": "Control behavior for arithmetic combinators.",
     "inherits": [
       "Inherited from LuaCombinatorControlBehavior: signals_last_tick, get_signal_last_tick",
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
@@ -3933,6 +3938,7 @@
   "LuaAutoplaceControlPrototype": {
     "name": "LuaAutoplaceControlPrototype",
     "type": "LuaAutoplaceControlPrototype",
+    "doc": "Prototype of an autoplace control.",
     "inherits": [],
     "properties": {
       "help": {
@@ -4017,6 +4023,7 @@
   "LuaBootstrap": {
     "name": "LuaBootstrap",
     "type": "LuaBootstrap",
+    "doc": "Entry point for registering event handlers. It is accessible through the global object named script.",
     "inherits": [],
     "properties": {
       "on_init": {
@@ -4528,6 +4535,7 @@
   "LuaBurner": {
     "name": "LuaBurner",
     "type": "LuaBurner",
+    "doc": "A reference to the burner energy source owned by a specific LuaEntity or LuaEquipment.",
     "inherits": [],
     "properties": {
       "help": {
@@ -4622,6 +4630,7 @@
   "LuaBurnerPrototype": {
     "name": "LuaBurnerPrototype",
     "type": "LuaBurnerPrototype",
+    "doc": "Prototype of a burner energy source.",
     "inherits": [],
     "properties": {
       "help": {
@@ -4754,6 +4763,7 @@
   "LuaChunkIterator": {
     "name": "LuaChunkIterator",
     "type": "LuaChunkIterator",
+    "doc": "A chunk iterator can be used for iterating chunks coordinates of a surface.",
     "inherits": [],
     "properties": {
       "help": {
@@ -4789,6 +4799,7 @@
   "LuaCircuitNetwork": {
     "name": "LuaCircuitNetwork",
     "type": "LuaCircuitNetwork",
+    "doc": "A circuit network associated with a given entity, connector, and wire type.",
     "inherits": [],
     "properties": {
       "get_signal": {
@@ -4881,6 +4892,7 @@
   "LuaCombinatorControlBehavior": {
     "name": "LuaCombinatorControlBehavior",
     "type": "LuaCombinatorControlBehavior",
+    "doc": "Gets the value of a specific signal sent by this combinator behavior last tick or nil if the signal didn't exist.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -4912,6 +4924,7 @@
   "LuaCommandProcessor": {
     "name": "LuaCommandProcessor",
     "type": "LuaCommandProcessor",
+    "doc": "Allows for the registration of custom console commands through the global object named commands. Similarly to event subscriptions, these don't persist through a save-and-load cycle.",
     "inherits": [],
     "properties": {
       "add_command": {
@@ -4982,6 +4995,7 @@
   "LuaConstantCombinatorControlBehavior": {
     "name": "LuaConstantCombinatorControlBehavior",
     "type": "LuaConstantCombinatorControlBehavior",
+    "doc": "Control behavior for constant combinators.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -5071,6 +5085,7 @@
   "LuaContainerControlBehavior": {
     "name": "LuaContainerControlBehavior",
     "type": "LuaContainerControlBehavior",
+    "doc": "Control behavior for container entities.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -5103,6 +5118,7 @@
   "LuaControl": {
     "name": "LuaControl",
     "type": "LuaControl",
+    "doc": "This is an abstract base class containing the common functionality between LuaPlayer and entities (see LuaEntity). When accessing player-related functions through a LuaEntity, it must refer to a character entity.",
     "inherits": [],
     "properties": {
       "get_inventory": {
@@ -6082,6 +6098,7 @@
   "LuaControlBehavior": {
     "name": "LuaControlBehavior",
     "type": "LuaControlBehavior",
+    "doc": "The control behavior for an entity. Inserters have logistic network and circuit network behavior logic, lamps have circuit logic and so on. This is an abstract base class that concrete control behaviors inherit.",
     "inherits": [],
     "properties": {
       "get_circuit_network": {
@@ -6124,6 +6141,7 @@
   "LuaCustomChartTag": {
     "name": "LuaCustomChartTag",
     "type": "LuaCustomChartTag",
+    "doc": "A custom tag that shows on the map view.",
     "inherits": [],
     "properties": {
       "destroy": {
@@ -6215,6 +6233,7 @@
   "LuaCustomInputPrototype": {
     "name": "LuaCustomInputPrototype",
     "type": "LuaCustomInputPrototype",
+    "doc": "Prototype of a custom input.",
     "inherits": [],
     "properties": {
       "help": {
@@ -6368,6 +6387,7 @@
   "LuaCustomTable": {
     "name": "LuaCustomTable",
     "type": "LuaCustomTable",
+    "doc": "Lazily evaluated table. For performance reasons, we sometimes return a custom table-like type instead of a native Lua table. This custom type lazily constructs the necessary Lua wrappers of the corresponding C++ objects, therefore preventing their unnecessary construction in some cases.",
     "inherits": [],
     "properties": {
       "help": {
@@ -6410,6 +6430,7 @@
   "LuaDamagePrototype": {
     "name": "LuaDamagePrototype",
     "type": "LuaDamagePrototype",
+    "doc": "Prototype of a damage.",
     "inherits": [],
     "properties": {
       "help": {
@@ -6476,6 +6497,7 @@
   "LuaDeciderCombinatorControlBehavior": {
     "name": "LuaDeciderCombinatorControlBehavior",
     "type": "LuaDeciderCombinatorControlBehavior",
+    "doc": "Control behavior for decider combinators.",
     "inherits": [
       "Inherited from LuaCombinatorControlBehavior: signals_last_tick, get_signal_last_tick",
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
@@ -6517,6 +6539,7 @@
   "LuaDecorativePrototype": {
     "name": "LuaDecorativePrototype",
     "type": "LuaDecorativePrototype",
+    "doc": "Prototype of an optimized decorative.",
     "inherits": [],
     "properties": {
       "help": {
@@ -6605,6 +6628,7 @@
   "LuaElectricEnergySourcePrototype": {
     "name": "LuaElectricEnergySourcePrototype",
     "type": "LuaElectricEnergySourcePrototype",
+    "doc": "Prototype of an electric energy source.",
     "inherits": [],
     "properties": {
       "help": {
@@ -6685,6 +6709,7 @@
   "LuaEntity": {
     "name": "LuaEntity",
     "type": "LuaEntity",
+    "doc": "The primary interface for interacting with entities through the Lua API. Entities are everything that exists on the map except for tiles (see LuaTile).",
     "inherits": [
       "Inherited from LuaControl: surface, surface_index, position, vehicle, force, force_index, selected, opened, crafting_queue_size, crafting_queue_progress, walking_state, riding_state, mining_state, shooting_state, picking_state, repair_state, cursor_stack, cursor_ghost, driving, crafting_queue, following_robots, cheat_mode, character_crafting_speed_modifier, character_mining_speed_modifier, character_additional_mining_categories, character_running_speed_modifier, character_build_distance_bonus, character_item_drop_distance_bonus, character_reach_distance_bonus, character_resource_reach_distance_bonus, character_item_pickup_distance_bonus, character_loot_pickup_distance_bonus, character_inventory_slots_bonus, character_trash_slot_count_bonus, character_maximum_following_robot_count_bonus, character_health_bonus, character_personal_logistic_requests_enabled, vehicle_logistic_requests_enabled, opened_gui_type, build_distance, drop_item_distance, reach_distance, item_pickup_distance, loot_pickup_distance, resource_reach_distance, in_combat, character_running_speed, character_mining_progress, get_inventory, get_max_inventory_index, get_main_inventory, can_insert, insert, set_gui_arrow, clear_gui_arrow, get_item_count, has_items_inside, can_reach_entity, clear_items_inside, remove_item, teleport, update_selected_entity, clear_selected_entity, disable_flashlight, enable_flashlight, is_flashlight_enabled, get_craftable_count, begin_crafting, cancel_crafting, mine_entity, mine_tile, is_player, open_technology_gui, set_personal_logistic_slot, set_vehicle_logistic_slot, get_personal_logistic_slot, get_vehicle_logistic_slot, clear_personal_logistic_slot, clear_vehicle_logistic_slot, is_cursor_blueprint, get_blueprint_entities, is_cursor_empty"
     ],
@@ -9771,6 +9796,7 @@
   "LuaEntityPrototype": {
     "name": "LuaEntityPrototype",
     "type": "LuaEntityPrototype",
+    "doc": "Prototype of an entity.",
     "inherits": [],
     "properties": {
       "has_flag": {
@@ -11884,6 +11910,7 @@
   "LuaEquipment": {
     "name": "LuaEquipment",
     "type": "LuaEquipment",
+    "doc": "An item in a LuaEquipmentGrid, for example a fusion reactor placed in one's power armor.",
     "inherits": [],
     "properties": {
       "help": {
@@ -12027,6 +12054,7 @@
   "LuaEquipmentCategoryPrototype": {
     "name": "LuaEquipmentCategoryPrototype",
     "type": "LuaEquipmentCategoryPrototype",
+    "doc": "Prototype of an equipment category.",
     "inherits": [],
     "properties": {
       "help": {
@@ -12085,6 +12113,7 @@
   "LuaEquipmentGrid": {
     "name": "LuaEquipmentGrid",
     "type": "LuaEquipmentGrid",
+    "doc": "An equipment grid is for example the inside of a power armor.",
     "inherits": [],
     "properties": {
       "take": {
@@ -12379,6 +12408,7 @@
   "LuaEquipmentGridPrototype": {
     "name": "LuaEquipmentGridPrototype",
     "type": "LuaEquipmentGridPrototype",
+    "doc": "Prototype of an equipment grid.",
     "inherits": [],
     "properties": {
       "help": {
@@ -12465,6 +12495,7 @@
   "LuaEquipmentPrototype": {
     "name": "LuaEquipmentPrototype",
     "type": "LuaEquipmentPrototype",
+    "doc": "Prototype of a modular equipment.",
     "inherits": [],
     "properties": {
       "help": {
@@ -12739,6 +12770,7 @@
   "LuaFlowStatistics": {
     "name": "LuaFlowStatistics",
     "type": "LuaFlowStatistics",
+    "doc": "Encapsulates statistic data for different parts of the game. In the context of flow statistics, input and output describe on which side of the associated GUI the values are shown. Input values are shown on the left side, output values on the right side.",
     "inherits": [],
     "properties": {
       "get_input_count": {
@@ -12919,6 +12951,7 @@
   "LuaFluidBox": {
     "name": "LuaFluidBox",
     "type": "LuaFluidBox",
+    "doc": "An array of fluid boxes of an entity. Entities may contain more than one fluid box, and some can change the number of fluid boxes -- for instance, an assembling machine will change its number of fluid boxes depending on its active recipe. See Fluid.",
     "inherits": [],
     "properties": {
       "get_prototype": {
@@ -13138,6 +13171,7 @@
   "LuaFluidBoxPrototype": {
     "name": "LuaFluidBoxPrototype",
     "type": "LuaFluidBoxPrototype",
+    "doc": "A prototype of a fluidbox owned by some LuaEntityPrototype.",
     "inherits": [],
     "properties": {
       "help": {
@@ -13263,6 +13297,7 @@
   "LuaFluidEnergySourcePrototype": {
     "name": "LuaFluidEnergySourcePrototype",
     "type": "LuaFluidEnergySourcePrototype",
+    "doc": "Prototype of a fluid energy source.",
     "inherits": [],
     "properties": {
       "help": {
@@ -13365,6 +13400,7 @@
   "LuaFluidPrototype": {
     "name": "LuaFluidPrototype",
     "type": "LuaFluidPrototype",
+    "doc": "Prototype of a fluid.",
     "inherits": [],
     "properties": {
       "help": {
@@ -13507,6 +13543,7 @@
   "LuaFontPrototype": {
     "name": "LuaFontPrototype",
     "type": "LuaFontPrototype",
+    "doc": "Prototype of a font.",
     "inherits": [],
     "properties": {
       "help": {
@@ -13583,6 +13620,7 @@
   "LuaForce": {
     "name": "LuaForce",
     "type": "LuaForce",
+    "doc": "LuaForce encapsulates data local to each \"force\" or \"faction\" of the game. Default forces are player, enemy and neutral. Players and mods can create additional forces (up to 64 total).",
     "inherits": [],
     "properties": {
       "get_entity_count": {
@@ -14866,6 +14904,7 @@
   "LuaFuelCategoryPrototype": {
     "name": "LuaFuelCategoryPrototype",
     "type": "LuaFuelCategoryPrototype",
+    "doc": "Prototype of a fuel category.",
     "inherits": [],
     "properties": {
       "help": {
@@ -14924,6 +14963,7 @@
   "LuaGameScript": {
     "name": "LuaGameScript",
     "type": "LuaGameScript",
+    "doc": "Main toplevel type, provides access to most of the API though its members. An instance of LuaGameScript is available as the global object named game.",
     "inherits": [],
     "properties": {
       "set_game_state": {
@@ -16603,6 +16643,7 @@
   "LuaGenericOnOffControlBehavior": {
     "name": "LuaGenericOnOffControlBehavior",
     "type": "LuaGenericOnOffControlBehavior",
+    "doc": "An abstract base class for behaviors that support switching the entity on or off based on some condition.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -16667,6 +16708,7 @@
   "LuaGroup": {
     "name": "LuaGroup",
     "type": "LuaGroup",
+    "doc": "Item group or subgroup.",
     "inherits": [],
     "properties": {
       "help": {
@@ -16749,6 +16791,7 @@
   "LuaGui": {
     "name": "LuaGui",
     "type": "LuaGui",
+    "doc": "The root of the GUI. This type houses the root elements, top, left, center, goal, and screen, to which other elements can be added to be displayed on screen.",
     "inherits": [],
     "properties": {
       "is_valid_sprite_path": {
@@ -16857,6 +16900,7 @@
   "LuaGuiElement": {
     "name": "LuaGuiElement",
     "type": "LuaGuiElement",
+    "doc": "An element of a custom GUI. This type is used to represent any kind of a GUI element - labels, buttons and frames are all instances of this type. Just like LuaEntity, different kinds of elements support different attributes; attempting to access an attribute on an element that doesn't support it (for instance, trying to access the column_count of a textfield) will result in a runtime error.",
     "inherits": [],
     "properties": {
       "add": {
@@ -18222,6 +18266,7 @@
   "LuaHeatBufferPrototype": {
     "name": "LuaHeatBufferPrototype",
     "type": "LuaHeatBufferPrototype",
+    "doc": "Prototype of a heat buffer.",
     "inherits": [],
     "properties": {
       "help": {
@@ -18300,6 +18345,7 @@
   "LuaHeatEnergySourcePrototype": {
     "name": "LuaHeatEnergySourcePrototype",
     "type": "LuaHeatEnergySourcePrototype",
+    "doc": "Prototype of a heat energy source.",
     "inherits": [],
     "properties": {
       "help": {
@@ -18404,6 +18450,7 @@
   "LuaInserterControlBehavior": {
     "name": "LuaInserterControlBehavior",
     "type": "LuaInserterControlBehavior",
+    "doc": "Control behavior for inserters.",
     "inherits": [
       "Inherited from LuaGenericOnOffControlBehavior: disabled, circuit_condition, logistic_condition, connect_to_logistic_network, valid, object_name, help",
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
@@ -18477,6 +18524,7 @@
   "LuaInventory": {
     "name": "LuaInventory",
     "type": "LuaInventory",
+    "doc": "A storage of item stacks.",
     "inherits": [],
     "properties": {
       "clear": {
@@ -18842,6 +18890,7 @@
   "LuaItemPrototype": {
     "name": "LuaItemPrototype",
     "type": "LuaItemPrototype",
+    "doc": "Prototype of an item.",
     "inherits": [],
     "properties": {
       "has_flag": {
@@ -19584,6 +19633,7 @@
   "LuaItemStack": {
     "name": "LuaItemStack",
     "type": "LuaItemStack",
+    "doc": "A reference to an item and count owned by some external entity.",
     "inherits": [],
     "properties": {
       "is_blueprint_setup": {
@@ -20680,6 +20730,7 @@
   "LuaLampControlBehavior": {
     "name": "LuaLampControlBehavior",
     "type": "LuaLampControlBehavior",
+    "doc": "Control behavior for lamps.",
     "inherits": [
       "Inherited from LuaGenericOnOffControlBehavior: disabled, circuit_condition, logistic_condition, connect_to_logistic_network, valid, object_name, help",
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
@@ -20729,6 +20780,7 @@
   "LuaLazyLoadedValue": {
     "name": "LuaLazyLoadedValue",
     "type": "LuaLazyLoadedValue",
+    "doc": "A lazily loaded value. For performance reasons, we sometimes return a custom lazily-loaded value type instead of the native Lua value. This custom type lazily constructs the necessary value when LuaLazyLoadedValue::get is called, therefore preventing its unnecessary construction in some cases.",
     "inherits": [],
     "properties": {
       "get": {
@@ -20766,6 +20818,7 @@
   "LuaLogisticCell": {
     "name": "LuaLogisticCell",
     "type": "LuaLogisticCell",
+    "doc": "Logistic cell of a particular LuaEntity. A \"Logistic Cell\" is the given name for settings and properties used by what would normally be seen as a \"Roboport\". A logistic cell however doesn't have to be attached to the roboport entity (the character has one for the personal roboport).",
     "inherits": [],
     "properties": {
       "is_in_logistic_range": {
@@ -20958,6 +21011,7 @@
   "LuaLogisticContainerControlBehavior": {
     "name": "LuaLogisticContainerControlBehavior",
     "type": "LuaLogisticContainerControlBehavior",
+    "doc": "Control behavior for logistic chests.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -20998,6 +21052,7 @@
   "LuaLogisticNetwork": {
     "name": "LuaLogisticNetwork",
     "type": "LuaLogisticNetwork",
+    "doc": "A single logistic network of a given force on a given surface.",
     "inherits": [],
     "properties": {
       "get_item_count": {
@@ -21381,6 +21436,7 @@
   "LuaLogisticPoint": {
     "name": "LuaLogisticPoint",
     "type": "LuaLogisticPoint",
+    "doc": "Logistic point of a particular LuaEntity. A \"Logistic point\" is the name given for settings and properties used by requester, provider, and storage points in a given logistic network. These \"points\" don't have to be a logistic container but often are. One other entity that can own several points is the \"character\" character type entity.",
     "inherits": [],
     "properties": {
       "help": {
@@ -21481,6 +21537,7 @@
   "LuaMiningDrillControlBehavior": {
     "name": "LuaMiningDrillControlBehavior",
     "type": "LuaMiningDrillControlBehavior",
+    "doc": "Control behavior for mining drills.",
     "inherits": [
       "Inherited from LuaGenericOnOffControlBehavior: disabled, circuit_condition, logistic_condition, connect_to_logistic_network, valid, object_name, help",
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
@@ -21546,6 +21603,7 @@
   "LuaModSettingPrototype": {
     "name": "LuaModSettingPrototype",
     "type": "LuaModSettingPrototype",
+    "doc": "Prototype of a mod setting.",
     "inherits": [],
     "properties": {
       "help": {
@@ -21682,6 +21740,7 @@
   "LuaModuleCategoryPrototype": {
     "name": "LuaModuleCategoryPrototype",
     "type": "LuaModuleCategoryPrototype",
+    "doc": "Prototype of a module category.",
     "inherits": [],
     "properties": {
       "help": {
@@ -21740,6 +21799,7 @@
   "LuaNamedNoiseExpression": {
     "name": "LuaNamedNoiseExpression",
     "type": "LuaNamedNoiseExpression",
+    "doc": "Prototype of a named noise expression.",
     "inherits": [],
     "properties": {
       "help": {
@@ -21814,6 +21874,7 @@
   "LuaNoiseLayerPrototype": {
     "name": "LuaNoiseLayerPrototype",
     "type": "LuaNoiseLayerPrototype",
+    "doc": "Prototype of a noise layer.",
     "inherits": [],
     "properties": {
       "help": {
@@ -21872,6 +21933,7 @@
   "LuaParticlePrototype": {
     "name": "LuaParticlePrototype",
     "type": "LuaParticlePrototype",
+    "doc": "Prototype of an optimized particle.",
     "inherits": [],
     "properties": {
       "help": {
@@ -21984,6 +22046,7 @@
   "LuaPermissionGroup": {
     "name": "LuaPermissionGroup",
     "type": "LuaPermissionGroup",
+    "doc": "A permission group that defines what players in this group are allowed to do.",
     "inherits": [],
     "properties": {
       "add_player": {
@@ -22110,6 +22173,7 @@
   "LuaPermissionGroups": {
     "name": "LuaPermissionGroups",
     "type": "LuaPermissionGroups",
+    "doc": "All permission groups.",
     "inherits": [],
     "properties": {
       "create_group": {
@@ -22178,6 +22242,7 @@
   "LuaPlayer": {
     "name": "LuaPlayer",
     "type": "LuaPlayer",
+    "doc": "A player in the game. Pay attention that a player may or may not have a character, which is the LuaEntity of the little guy running around the world doing things.",
     "inherits": [
       "Inherited from LuaControl: surface, surface_index, position, vehicle, force, force_index, selected, opened, crafting_queue_size, crafting_queue_progress, walking_state, riding_state, mining_state, shooting_state, picking_state, repair_state, cursor_stack, cursor_ghost, driving, crafting_queue, following_robots, cheat_mode, character_crafting_speed_modifier, character_mining_speed_modifier, character_additional_mining_categories, character_running_speed_modifier, character_build_distance_bonus, character_item_drop_distance_bonus, character_reach_distance_bonus, character_resource_reach_distance_bonus, character_item_pickup_distance_bonus, character_loot_pickup_distance_bonus, character_inventory_slots_bonus, character_trash_slot_count_bonus, character_maximum_following_robot_count_bonus, character_health_bonus, character_personal_logistic_requests_enabled, vehicle_logistic_requests_enabled, opened_gui_type, build_distance, drop_item_distance, reach_distance, item_pickup_distance, loot_pickup_distance, resource_reach_distance, in_combat, character_running_speed, character_mining_progress, get_inventory, get_max_inventory_index, get_main_inventory, can_insert, insert, set_gui_arrow, clear_gui_arrow, get_item_count, has_items_inside, can_reach_entity, clear_items_inside, remove_item, teleport, update_selected_entity, clear_selected_entity, disable_flashlight, enable_flashlight, is_flashlight_enabled, get_craftable_count, begin_crafting, cancel_crafting, mine_entity, mine_tile, is_player, open_technology_gui, set_personal_logistic_slot, set_vehicle_logistic_slot, get_personal_logistic_slot, get_vehicle_logistic_slot, clear_personal_logistic_slot, clear_vehicle_logistic_slot, is_cursor_blueprint, get_blueprint_entities, is_cursor_empty"
     ],
@@ -23583,6 +23648,7 @@
   "LuaProfiler": {
     "name": "LuaProfiler",
     "type": "LuaProfiler",
+    "doc": "An object used to measure script performance.",
     "inherits": [],
     "properties": {
       "reset": {
@@ -23662,6 +23728,7 @@
   "LuaProgrammableSpeakerControlBehavior": {
     "name": "LuaProgrammableSpeakerControlBehavior",
     "type": "LuaProgrammableSpeakerControlBehavior",
+    "doc": "Control behavior for programmable speakers.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -23706,6 +23773,7 @@
   "LuaRCON": {
     "name": "LuaRCON",
     "type": "LuaRCON",
+    "doc": "An interface to send messages to the calling RCON interface through the global object named rcon.",
     "inherits": [],
     "properties": {
       "print": {
@@ -23735,6 +23803,7 @@
   "LuaRailChainSignalControlBehavior": {
     "name": "LuaRailChainSignalControlBehavior",
     "type": "LuaRailChainSignalControlBehavior",
+    "doc": "Control behavior for rail chain signals.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -23791,6 +23860,7 @@
   "LuaRailPath": {
     "name": "LuaRailPath",
     "type": "LuaRailPath",
+    "doc": "A rail path.",
     "inherits": [],
     "properties": {
       "help": {
@@ -23869,6 +23939,7 @@
   "LuaRailSignalControlBehavior": {
     "name": "LuaRailSignalControlBehavior",
     "type": "LuaRailSignalControlBehavior",
+    "doc": "Control behavior for rail signals.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -23943,6 +24014,7 @@
   "LuaRandomGenerator": {
     "name": "LuaRandomGenerator",
     "type": "LuaRandomGenerator",
+    "doc": "A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state. Note this is entirely different from calling math.random() and you should be sure you actually want to use this over calling math.random(). If you aren't sure if you need to use this over calling math.random() then you probably don't need to use this.",
     "inherits": [],
     "properties": {
       "re_seed": {
@@ -23992,6 +24064,7 @@
   "LuaRecipe": {
     "name": "LuaRecipe",
     "type": "LuaRecipe",
+    "doc": "A crafting recipe. Recipes belong to forces (see LuaForce) because some recipes are unlocked by research, and researches are per-force.",
     "inherits": [],
     "properties": {
       "reload": {
@@ -24147,6 +24220,7 @@
   "LuaRecipeCategoryPrototype": {
     "name": "LuaRecipeCategoryPrototype",
     "type": "LuaRecipeCategoryPrototype",
+    "doc": "Prototype of a recipe category.",
     "inherits": [],
     "properties": {
       "help": {
@@ -24205,6 +24279,7 @@
   "LuaRecipePrototype": {
     "name": "LuaRecipePrototype",
     "type": "LuaRecipePrototype",
+    "doc": "A crafting recipe prototype.",
     "inherits": [],
     "properties": {
       "help": {
@@ -24441,6 +24516,7 @@
   "LuaRemote": {
     "name": "LuaRemote",
     "type": "LuaRemote",
+    "doc": "Registry of interfaces between scripts. An interface is simply a dictionary mapping names to functions. A script or mod can then register an interface with LuaRemote, after that any script can call the registered functions, provided it knows the interface name and the desired function name. An instance of LuaRemote is available through the global object named remote.",
     "inherits": [],
     "properties": {
       "add_interface": {
@@ -24522,6 +24598,7 @@
   "LuaRendering": {
     "name": "LuaRendering",
     "type": "LuaRendering",
+    "doc": "Allows rendering of geometric shapes, text and sprites in the game world through the global object named rendering. Each render object is identified by an id that is universally unique for the lifetime of a whole game.",
     "inherits": [],
     "properties": {
       "draw_line": {
@@ -27009,6 +27086,7 @@
   "LuaResourceCategoryPrototype": {
     "name": "LuaResourceCategoryPrototype",
     "type": "LuaResourceCategoryPrototype",
+    "doc": "Prototype of a resource category.",
     "inherits": [],
     "properties": {
       "help": {
@@ -27067,6 +27145,7 @@
   "LuaRoboportControlBehavior": {
     "name": "LuaRoboportControlBehavior",
     "type": "LuaRoboportControlBehavior",
+    "doc": "Control behavior for roboports.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -27139,6 +27218,7 @@
   "LuaSettings": {
     "name": "LuaSettings",
     "type": "LuaSettings",
+    "doc": "Object containing mod settings of three distinct types: startup, global, and player. An instance of LuaSettings is available through the global object named settings.",
     "inherits": [],
     "properties": {
       "get_player_settings": {
@@ -27192,6 +27272,7 @@
   "LuaShortcutPrototype": {
     "name": "LuaShortcutPrototype",
     "type": "LuaShortcutPrototype",
+    "doc": "Prototype of a shortcut.",
     "inherits": [],
     "properties": {
       "help": {
@@ -27286,6 +27367,7 @@
   "LuaStorageTankControlBehavior": {
     "name": "LuaStorageTankControlBehavior",
     "type": "LuaStorageTankControlBehavior",
+    "doc": "Control behavior for storage tanks.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
@@ -27318,6 +27400,7 @@
   "LuaStyle": {
     "name": "LuaStyle",
     "type": "LuaStyle",
+    "doc": "Style of a GUI element. All of the attributes listed here may be nil if not available for a particular GUI element.",
     "inherits": [],
     "properties": {
       "help": {
@@ -27814,6 +27897,7 @@
   "LuaSurface": {
     "name": "LuaSurface",
     "type": "LuaSurface",
+    "doc": "A \"domain\" of the world. Surfaces can only be created and deleted through the API. Surfaces are uniquely identified by their name. Every game contains at least the surface \"nauvis\".",
     "inherits": [],
     "properties": {
       "get_pollution": {
@@ -30325,6 +30409,7 @@
   "LuaTechnology": {
     "name": "LuaTechnology",
     "type": "LuaTechnology",
+    "doc": "One research item.",
     "inherits": [],
     "properties": {
       "reload": {
@@ -30496,6 +30581,7 @@
   "LuaTechnologyPrototype": {
     "name": "LuaTechnologyPrototype",
     "type": "LuaTechnologyPrototype",
+    "doc": "A Technology prototype.",
     "inherits": [],
     "properties": {
       "help": {
@@ -30660,6 +30746,7 @@
   "LuaTile": {
     "name": "LuaTile",
     "type": "LuaTile",
+    "doc": "A single \"square\" on the map.",
     "inherits": [],
     "properties": {
       "collides_with": {
@@ -30831,6 +30918,7 @@
   "LuaTilePrototype": {
     "name": "LuaTilePrototype",
     "type": "LuaTilePrototype",
+    "doc": "Prototype of a tile.",
     "inherits": [],
     "properties": {
       "help": {
@@ -31031,6 +31119,7 @@
   "LuaTrain": {
     "name": "LuaTrain",
     "type": "LuaTrain",
+    "doc": "A train. Trains are a sequence of connected rolling stocks -- locomotives and wagons.",
     "inherits": [],
     "properties": {
       "get_item_count": {
@@ -31445,6 +31534,7 @@
   "LuaTrainStopControlBehavior": {
     "name": "LuaTrainStopControlBehavior",
     "type": "LuaTrainStopControlBehavior",
+    "doc": "Control behavior for train stops.",
     "inherits": [
       "Inherited from LuaGenericOnOffControlBehavior: disabled, circuit_condition, logistic_condition, connect_to_logistic_network, valid, object_name, help",
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
@@ -31550,6 +31640,7 @@
   "LuaTransportBeltControlBehavior": {
     "name": "LuaTransportBeltControlBehavior",
     "type": "LuaTransportBeltControlBehavior",
+    "doc": "Control behavior for transport belts.",
     "inherits": [
       "Inherited from LuaGenericOnOffControlBehavior: disabled, circuit_condition, logistic_condition, connect_to_logistic_network, valid, object_name, help",
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
@@ -31607,6 +31698,7 @@
   "LuaTransportLine": {
     "name": "LuaTransportLine",
     "type": "LuaTransportLine",
+    "doc": "One line on a transport belt.",
     "inherits": [],
     "properties": {
       "clear": {
@@ -31787,6 +31879,7 @@
   "LuaTrivialSmokePrototype": {
     "name": "LuaTrivialSmokePrototype",
     "type": "LuaTrivialSmokePrototype",
+    "doc": "Prototype of a trivial smoke.",
     "inherits": [],
     "properties": {
       "help": {
@@ -31929,6 +32022,7 @@
   "LuaUnitGroup": {
     "name": "LuaUnitGroup",
     "type": "LuaUnitGroup",
+    "doc": "A collection of units moving and attacking together. The engine creates autonomous unit groups to attack polluted areas. The script can create and control such groups as well. Groups can accept commands in the same manner as regular units.",
     "inherits": [],
     "properties": {
       "add_member": {
@@ -32094,6 +32188,7 @@
   "LuaVirtualSignalPrototype": {
     "name": "LuaVirtualSignalPrototype",
     "type": "LuaVirtualSignalPrototype",
+    "doc": "Prototype of a virtual signal.",
     "inherits": [],
     "properties": {
       "help": {
@@ -32166,6 +32261,7 @@
   "LuaVoidEnergySourcePrototype": {
     "name": "LuaVoidEnergySourcePrototype",
     "type": "LuaVoidEnergySourcePrototype",
+    "doc": "Prototype of a void energy source.",
     "inherits": [],
     "properties": {
       "help": {
@@ -32216,6 +32312,7 @@
   "LuaWallControlBehavior": {
     "name": "LuaWallControlBehavior",
     "type": "LuaWallControlBehavior",
+    "doc": "Control behavior for walls.",
     "inherits": [
       "Inherited from LuaControlBehavior: type, entity, get_circuit_network"
     ],
