@@ -11,6 +11,8 @@
   "LuaBootstrap": {
     "name": "LuaBootstrap",
     "type": "LuaBootstrap",
+    "doc": "Entry point for registering event handlers. It is accessible through the global object named\n                script.",
+    "inherits": [],
     "properties": {
       "on_init": {
         "name": "on_init",
@@ -18,6 +20,7 @@
         "short": "Register a function to be run on mod initialization. [...]",
         "member": "on_init(handler)",
         "type": "function",
+        "returns": "null",
         "args": {
           "handler": {
             "name": "handler",
@@ -32,6 +35,7 @@
         "short": "Register a function to be run on save load. [...]",
         "member": "on_load(handler)",
         "type": "function",
+        "returns": "null",
         "args": {
           "handler": {
             "name": "handler",
@@ -46,6 +50,7 @@
         "short": "Register a function to be run when mod configuration changes. [...]",
         "member": "on_configuration_changed(handler)",
         "type": "function",
+        "returns": "null",
         "args": {
           "handler": {
             "name": "handler",
@@ -60,6 +65,7 @@
         "short": "Register a handler to run on the specified event(s). [...]",
         "member": "on_event(event, handler, filters?)",
         "type": "function",
+        "returns": "null",
         "args": {
           "event": {
             "name": "event",
@@ -84,6 +90,7 @@
         "short": "Register a handler to run every nth-tick(s). [...]",
         "member": "on_nth_tick(tick, handler)",
         "type": "function",
+        "returns": "null",
         "args": {
           "tick": {
             "name": "tick",
@@ -103,7 +110,7 @@
         "doc": "Registers an entity so that after it's destroyed, on_entity_destroyed is called. Once an entity is registered, it stays registered until it is actually destroyed, even through save/load cycles. The registration is global across all mods, meaning once one mod registers an entity, all mods listening to on_entity_destroyed will receive the event when it is destroyed. Registering the same entity multiple times will still only fire the destruction event once, and will return the same registration number. Returns: The registration number. It is used to identify the entity in the on_entity_destroyed event.",
         "short": "Registers an entity so that after it's destroyed, on_entity_destroyed is called. [...]",
         "member": "register_on_entity_destroyed(entity)  → uint64",
-        "returns": "→ uint64",
+        "returns": "uint64",
         "args": {
           "entity": {
             "name": "entity",
@@ -118,6 +125,7 @@
         "short": "Register a metatable to have linkage recorded and restored when saving/loading. [...]",
         "member": "register_metatable(name, metatable)",
         "type": "function",
+        "returns": "null",
         "args": {
           "name": {
             "name": "name",
@@ -137,7 +145,7 @@
         "doc": "Generate a new, unique event ID that can be used to raise custom events with LuaBootstrap::raise_event. Returns: The newly generated event ID.",
         "short": "Generate a new, unique event ID that can be used to raise custom events with LuaBootstrap::raise_event.",
         "member": "generate_event_name()  → uint",
-        "returns": "→ uint"
+        "returns": "uint"
       },
       "get_event_handler": {
         "name": "get_event_handler",
@@ -145,7 +153,7 @@
         "doc": "Find the event handler for an event. Returns: Reference to the function currently registered as the handler, if it was found.",
         "short": "Find the event handler for an event.",
         "member": "get_event_handler(event)  → function(EventData)?",
-        "returns": "→ function(EventData)?",
+        "returns": "function(EventData)",
         "args": {
           "event": {
             "name": "event",
@@ -159,7 +167,8 @@
         "type": "function",
         "doc": "Gets the mod event order as a string.",
         "short": "Gets the mod event order as a string.",
-        "member": "get_event_order()  → string"
+        "member": "get_event_order()  → string",
+        "returns": "null"
       },
       "set_event_filter": {
         "name": "set_event_filter",
@@ -167,6 +176,7 @@
         "short": "Sets the filters for the given event. [...]",
         "member": "set_event_filter(event, filters?)",
         "type": "function",
+        "returns": "null",
         "args": {
           "event": {
             "name": "event",
@@ -186,7 +196,7 @@
         "doc": "Gets the filters for the given event. Returns: The filters or nil if none are defined.",
         "short": "Gets the filters for the given event.",
         "member": "get_event_filter(event)  → EventFilter?",
-        "returns": "→ EventFilter?",
+        "returns": "EventFilter",
         "args": {
           "event": {
             "name": "event",
@@ -201,6 +211,7 @@
         "doc": "Gets the prototype history for the given type and name.",
         "short": "Gets the prototype history for the given type and name.",
         "member": "get_prototype_history(type, name)  → PrototypeHistory",
+        "returns": "null",
         "args": {
           "type": {
             "name": "type",
@@ -220,6 +231,7 @@
         "short": "Raise an event. [...]",
         "member": "raise_event(event, data)",
         "type": "function",
+        "returns": "null",
         "args": {
           "event": {
             "name": "event",

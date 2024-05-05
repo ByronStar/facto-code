@@ -35,9 +35,9 @@ let events = defines.events.properties
 // processClasses(urls.proxy)
 // processDefines(urls.localPy)
 
-test()
+testSearch()
 
-function test() {
+function testSearch() {
     let classes = {}
 
     const apiKeysMap = {
@@ -53,43 +53,74 @@ function test() {
         style: "LuaStyle",
         tile: "LuaTile",
     };
-    function findApi(words, classes) {
-        console.log(words)
-        let api = classes[words.shift()];
-		if (!api || !api.properties) {
-			return null;
-		}
-		if (words.length === 0) {
-			return api;
-		}
-        let props = api.properties;
-        words.some(word => {
-            api = props[word];
+
+    function findApi(words) {
+        // find the top api class
+        let api = classes[words.shift()]
+        console.log('BEG', api.name)
+        // if there are more words to match and there is an api class with properties
+        while (words.length > 0 && api && api.properties) {
+            // the next word must be a property of the current api
+            let prop = words.shift()
+            console.log('NXT', prop)
+            // if the property exists in the api class, use the property type for further search
+            if (api.properties[prop]) {
+                // is the prop a function call?
+                if (api.properties[prop].returns) {
+                    api = classes[api.properties[prop].returns]
+                    console.log('RET', api?.name)
+                } else {
+                    const type = api.properties[prop].type
+                    // is the type a define?
+                    if (type.startsWith('defines')) {
+                        const [_, define] = type.split(".");
+                        api = define && classes.defines.properties[define] ? classes.defines.properties[define] : null
+                        console.log('DEF', api?.name)
+                    } else {
+                        api = classes[type]
+                        console.log('TYP', api?.name)
+                    }
+                }
+            }
+        }
+        return api
+    };
+
+    function findType(words) {
+        let type = classes[words.shift()];
+        if (!type) {
+            return null;
+        }
+        if (!type.properties || words.length === 0) {
+            return type;
+        }
+        let props = type.properties;
+        for (let i = 0; i < words.length; i++) {
+            type = props[words[i]];
             // Not found
-            if (!api) {
-                return true
-            }
+            if (!type)
+                return null;
             // First try traverse it's own properties
-            if (api.properties) {
-                props = api.properties;
-            } else {
-                // Then the complete type list
-                let parentType = api.type;
-                // Special handling for defines
-                if (/defines/.test(parentType)) {
-                    let [_, defineName] = parentType.split(".");
-                    api = defineName && this.classes.defines[defineName] ? this.classes.defines[defineName].properties : null
-                    return true
-                }
-                api = this.classes[parentType];
-                if (api && api.properties) {
-                    props = api.properties;
-                }
+            if (type.properties) {
+                props = type.properties;
+                continue;
             }
-            return false
-        })
-        return api;
+            // Then the complete type list
+            let parentType = type.type;
+            // Special handling for defines
+            if (/defines/.test(parentType)) {
+                let [__, defineName] = parentType.split(".");
+                return defineName && classes.defines.properties[defineName] || null
+            }
+            type = classes[parentType];
+            if (type && type.properties) {
+                props = type.properties;
+                continue;
+            }
+        }
+        return type;
     }
+
     readData('./api/classes.json').then(data => {
         classes = data
         Object.keys(apiKeysMap).forEach(key => {
@@ -98,12 +129,31 @@ function test() {
             }
         })
 
+        classes['LuaArithmeticCombinatorControlBehavior'].inherits.forEach(ih => {
+            const matches = ih.match(/(Inherited from )(.*): (([^,]+),?) */)
+            console.log(matches[2], ih.substring(matches[2].length + 17).split(', ') )
+        })
+
         // findValue('LuaPlayer', 'returns', 'uint')
         // findPropsValueAll('returns', 'LuaPlayer')
         // findPropsValueAll('type', 'LuaBurner')
         // findPropsValueAll('returns', 'LuaGameScript')
-        
-        console.log(findApi(['game', 'mod_setting_prototypes'], classes))
+        const tests = [
+            ['game'], // Lua... api class
+            ['game', 'mod_setting_prototypes'], // property with Lua... api class
+            ['game', 'mod_setting_prototypes', 'help'], // Lua... api class property :: function
+            ['game', 'mod_setting_prototypes', 'object_name'], // Lua... api class property :: string
+            ['game', 'mod_setting_prototypes', 'obje'], // Lua... api class property prefix
+            ['LuaControlBehavior', 'get_circuit_network', 'wire_type'], // Lua... api class define
+            ['LuaEntity', 'get_circuit_network', 'wire_type'], // Lua... api class define
+            ['LuaEntity', 'fluidbox', 'owner'], // Lua... api class define
+            ['LuaEntity', 'fluidbox', 'owner', 'direction'], // Lua... api class define
+            ['LuaEntity', 'surface'], // Lua... api class define
+        ]
+        // tests.forEach(words => {
+        //     console.log(words, findApi([...words])?.name)
+        //     console.log(words, findType([...words])?.name)
+        // })
     })
 
     function findPropsValueAll(prop, value) {
@@ -218,6 +268,7 @@ function processClasses(proxy) {
 
                 if (classes[data.class].properties[data.name].member.includes('(')) {
                     classes[data.class].properties[data.name].type = 'function'
+                    classes[data.class].properties[data.name].returns = 'null'
                 }
                 data.args.forEach((arg, i) => {
                     if (arg.doc) {
@@ -230,7 +281,7 @@ function processClasses(proxy) {
                 let args = data.args.reduce((a, v) => ({ ...a, [v.name]: v }), {})
                 if (args.undefined) {
                     if (args.undefined.type) {
-                        classes[data.class].properties[data.name].returns = args.undefined.type
+                        classes[data.class].properties[data.name].returns = args.undefined.type.replace(/→./, '').replace(/\?$/, '')
                         if (args.undefined.doc) {
                             classes[data.class].properties[data.name].doc += " Returns: " + args.undefined.doc
                         } else {
@@ -245,8 +296,6 @@ function processClasses(proxy) {
             } else {
                 console.log('???', data)
             }
-
-            // classes[data.name] = data;
         })
         .done(function () {
             // console.log(JSON.stringify(classes, null, 2));
@@ -320,7 +369,7 @@ function processEvents(proxy) {
         })
         // .data(data => console.log('DAT', data))
         .then((context, data, next) => {
-            console.log("events page: ", data);
+            console.log("events page: ", data.name);
             data.attrs.forEach(prop => {
                 if (prop.doc == '') {
                     delete prop.doc
@@ -458,6 +507,7 @@ function processClass(clazz) {
 
                 if (classes[data.class].properties[data.name].member.includes('(')) {
                     classes[data.class].properties[data.name].type = 'function'
+                    classes[data.class].properties[data.name].returns = 'null'
                 }
                 data.args.forEach((arg, i) => {
                     if (arg.doc) {
@@ -470,7 +520,7 @@ function processClass(clazz) {
                 let args = data.args.reduce((a, v) => ({ ...a, [v.name]: v }), {})
                 if (args.undefined) {
                     if (args.undefined.type) {
-                        classes[data.class].properties[data.name].returns = args.undefined.type
+                        classes[data.class].properties[data.name].returns = args.undefined.type.replace(/→./, '').replace(/\?$/, '')
                         if (args.undefined.doc) {
                             classes[data.class].properties[data.name].doc += " Returns: " + args.undefined.doc
                         } else {
@@ -485,8 +535,6 @@ function processClass(clazz) {
             } else {
                 console.log('???', data)
             }
-
-            // classes[data.name] = data;
         })
         .done(function () {
             saveData('./api/' + clazz + '.json', classes)
