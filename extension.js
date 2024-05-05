@@ -41,10 +41,11 @@ class FactoCompletion {
 			let words = match.replaceAll(/\[[^\]]*\]/g, '').split('.')
 			words.pop()
 			const api = this.findApi(words);
-			console.log('facto-code', words, api, Object.keys(api.properties).length)
 			if (!api || !api.properties) {
+				console.log('facto-code', words, api)
 				return undefined;
 			}
+			console.log('facto-code', words, api, Object.keys(api.properties).length)
 			let completionItems = Object.keys(api.properties).map(member => this.createCompletionItem(api.properties[member], member));
 			console.log('facto-code', completionItems.length, completionItems.map(c => c.detail))
 			return completionItems;
@@ -75,10 +76,10 @@ class FactoCompletion {
 
 	findApi(words) {
 		let api = this.classes[words.shift()];
-		if (!api) {
+		if (!api || !api.properties) {
 			return null;
 		}
-		if (!api.properties || words.length === 0) {
+		if (words.length === 0) {
 			return api;
 		}
 		let props = api.properties;

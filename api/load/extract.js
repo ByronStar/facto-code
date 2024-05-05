@@ -32,12 +32,14 @@ let events = defines.events.properties
 // processClass('LuaTransportLine')
 // processClass('LuaAchievementPrototyp5')
 
-processClasses(urls.proxy)
+// processClasses(urls.proxy)
 // processDefines(urls.localPy)
 
-// test()
+test()
 
 function test() {
+    let classes = {}
+
     const apiKeysMap = {
         game: "LuaGameScript",
         script: "LuaBootstrap",
@@ -54,12 +56,12 @@ function test() {
     function findApi(words, classes) {
         console.log(words)
         let api = classes[words.shift()];
-        if (!api) {
-            return null;
-        }
-        if (!api.properties || words.length === 0) {
-            return api;
-        }
+		if (!api || !api.properties) {
+			return null;
+		}
+		if (words.length === 0) {
+			return api;
+		}
         let props = api.properties;
         words.some(word => {
             api = props[word];
@@ -84,18 +86,39 @@ function test() {
                     props = api.properties;
                 }
             }
+            return false
         })
         return api;
     }
-    readData('./api/classes.json').then(classes => {
+    readData('./api/classes.json').then(data => {
+        classes = data
         Object.keys(apiKeysMap).forEach(key => {
             if (classes[apiKeysMap[key]]) {
                 classes[key] = classes[apiKeysMap[key]]
             }
         })
-        console.log(Object.keys(classes['LuaGameScript'].properties))
-        // console.log(findApi(['game'], classes))
+
+        // findValue('LuaPlayer', 'returns', 'uint')
+        // findPropsValueAll('returns', 'LuaPlayer')
+        // findPropsValueAll('type', 'LuaBurner')
+        // findPropsValueAll('returns', 'LuaGameScript')
+        
+        console.log(findApi(['game', 'mod_setting_prototypes'], classes))
     })
+
+    function findPropsValueAll(prop, value) {
+        Object.keys(classes).filter(api => api.startsWith('Lua')).forEach(api => {
+            findPropsValue(api, prop, value)
+        })
+    }
+
+    function findPropsValue(api, prop, value) {
+        const properties = classes[api].properties
+        const results = Object.keys(properties).filter(p => properties[p][prop] && (value == null || properties[p][prop].includes(value))).map(p => properties[p])
+        if (results.length > 0) {
+            console.log(api, results)
+        }
+    }
 }
 
 function processClasses(proxy) {
