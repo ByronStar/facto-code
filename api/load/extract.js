@@ -129,9 +129,14 @@ function testSearch() {
             }
         })
 
-        classes['LuaArithmeticCombinatorControlBehavior'].inherits.forEach(ih => {
-            const matches = ih.match(/(Inherited from )(.*): (([^,]+),?) */)
-            console.log(matches[2], ih.substring(matches[2].length + 17).split(', ') )
+        Object.keys(classes).filter(api => api.startsWith('Lua')).forEach(api => {
+            classes[api].inherits.forEach(ih => {
+                const matches = ih.match(/(Inherited from )(.*): (([^,]+),?) */)
+                // console.log(api, matches[2], ih.substring(matches[2].length + 17).split(', '))
+                ih.substring(matches[2].length + 17).split(', ').forEach(prop => {
+                    classes[api].properties[prop] = classes[matches[2]].properties[prop]
+                })
+            })
         })
 
         // findValue('LuaPlayer', 'returns', 'uint')
@@ -150,10 +155,10 @@ function testSearch() {
             ['LuaEntity', 'fluidbox', 'owner', 'direction'], // Lua... api class define
             ['LuaEntity', 'surface'], // Lua... api class define
         ]
-        // tests.forEach(words => {
-        //     console.log(words, findApi([...words])?.name)
-        //     console.log(words, findType([...words])?.name)
-        // })
+        tests.forEach(words => {
+            console.log(words, findApi([...words])?.name)
+            console.log(words, findType([...words])?.name)
+        })
     })
 
     function findPropsValueAll(prop, value) {

@@ -25,6 +25,17 @@ class FactoCompletion {
 	constructor(path) {
 		readData(path + '/classes.json').then(data => {
 			this.classes = data
+			// fill in inherited properties
+			Object.keys(this.classes).filter(api => api.startsWith('Lua')).forEach(api => {
+				this.classes[api].inherits.forEach(ih => {
+					const matches = ih.match(/(Inherited from )(.*): (([^,]+),?) */)
+					// console.log(api, matches[2], ih.substring(matches[2].length + 17).split(', '))
+					ih.substring(matches[2].length + 17).split(', ').forEach(prop => {
+						this.classes[api].properties[prop] = this.classes[matches[2]].properties[prop]
+					})
+				})
+			})
+			// fill in predefined variables api classes
 			Object.keys(apiKeysMap).forEach(key => {
 				if (this.classes[apiKeysMap[key]]) {
 					this.classes[key] = this.classes[apiKeysMap[key]]
@@ -40,75 +51,67 @@ class FactoCompletion {
 		if (match) {
 			let words = match.replaceAll(/\[[^\]]*\]/g, '').split('.')
 			words.pop()
+			let w = [...words]
 			const api = this.findApi(words);
 			if (!api || !api.properties) {
 				console.log('facto-code', words, api)
 				return undefined;
 			}
-			console.log('facto-code', words, api, Object.keys(api.properties).length)
+			console.log('facto-code', w, api, Object.keys(api.properties).length)
 			let completionItems = Object.keys(api.properties).map(member => this.createCompletionItem(api.properties[member], member));
-			console.log('facto-code', completionItems.length, completionItems.map(c => c.detail))
+			// console.log('facto-code', completionItems.length, completionItems.map(c => c.detail))
 			return completionItems;
 		}
 		return undefined
 	}
 
 	createCompletionItem(props, key) {
-        const { doc, name, mode } = props;
-        let completionItem = Object.assign(new vscode.CompletionItem(key), {
-            detail: props.type,
-            documentation: new vscode.MarkdownString([doc, mode].filter(Boolean).join("\n\n")),
-            kind: vscode.CompletionItemKind.Property
-        });
-        if (props.type === "function") {
-            Object.assign(completionItem, {
-                detail: name,
-                kind: vscode.CompletionItemKind.Function
-            });
-        }
-        else if (props.type === "define") {
-            Object.assign(completionItem, {
-                kind: vscode.CompletionItemKind.Constant
-            });
-        }
-        return completionItem;
-    }
-
-	findApi(words) {
-		let api = this.classes[words.shift()];
-		if (!api || !api.properties) {
-			return null;
+		const { doc, name, mode } = props;
+		let completionItem = Object.assign(new vscode.CompletionItem(key), {
+			detail: props.type,
+			documentation: new vscode.MarkdownString([doc, mode].filter(Boolean).join("\n\n")),
+			kind: vscode.CompletionItemKind.Property
+		});
+		if (props.type === "function") {
+			Object.assign(completionItem, {
+				detail: name,
+				kind: vscode.CompletionItemKind.Function
+			});
 		}
-		if (words.length === 0) {
-			return api;
+		else if (props.type === "define") {
+			Object.assign(completionItem, {
+				kind: vscode.CompletionItemKind.Constant
+			});
 		}
-		let props = api.properties;
-		words.some(word => {
-			api = props[word];
-			// Not found
-			if (!api) {
-				return true
-			}
-			// First try traverse it's own properties
-			if (api.properties) {
-				props = api.properties;
-			} else {
-				// Then the complete type list
-				let parentType = api.type;
-				// Special handling for defines
-				if (/defines/.test(parentType)) {
-					let [_, defineName] = parentType.split(".");
-					api = defineName && this.classes.defines[defineName] ? this.classes.defines[defineName].properties : null
-					return true
-				}
-				api = this.classes[parentType];
-				if (api && api.properties) {
-					props = api.properties;
-				}
-			}
-		})
-		return api;
+		return completionItem;
 	}
+
+    findApi(words) {
+        // find the top api class
+        let api = this.classes[words.shift()]
+        // if there are more words to match and there is an api class with properties
+        while (words.length > 0 && api && api.properties) {
+            // the next word must be a property of the current api
+            let prop = words.shift()
+            // if the property exists in the api class, use the property type for further search
+            if (api.properties[prop]) {
+                // is the prop a function call?
+                if (api.properties[prop].returns) {
+                    api = this.classes[api.properties[prop].returns]
+                } else {
+                    const type = api.properties[prop].type
+                    // is the type a define?
+                    if (type.startsWith('defines')) {
+                        const [_, define] = type.split(".");
+                        api = define && this.classes.defines.properties[define] ? this.classes.defines.properties[define] : null
+                    } else {
+                        api = this.classes[type]
+                    }
+                }
+            }
+        }
+        return api
+    }
 }
 
 // This method is called when your extension is activated
