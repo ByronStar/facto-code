@@ -34,8 +34,9 @@ let events = defines.events.properties
 
 // processClasses(urls.proxy)
 // processDefines(urls.localPy)
+processConcepts(urls.localPy)
 
-testSearch()
+// testSearch()
 
 function testSearch() {
     let classes = {}
@@ -393,6 +394,56 @@ function processEvents(proxy) {
         .done(function () {
             // console.log(JSON.stringify(defines, null, 2));
             saveData('./api/classes.json', classes)
+        })
+        .log(data => console.log('LOG', data))
+        .error(data => console.log('ERR', data))
+}
+
+function processConcepts(proxy) {
+    let concepts = {}
+    osmosis
+        .get((proxy + "concepts.html"))
+        .find("div.ml16.mb16 > div")
+        .set({
+            name: "h3",
+            doc: "p:first",
+            attrs: [
+                osmosis
+                    .find("tr")
+                    .set({
+                        name: "span.docs-attribute-name",
+                        type: "span.docs-attribute-type",
+                        doc: "div.docs-attribute-description",
+                    })
+            ]
+        })
+        // .data(data => console.log('DAT', data))
+        .then((context, data, next) => {
+            const m = data.name.match(/([^ ]+)\s+::\s(.*)/)
+            data.name = m[1]
+            data.type = m[2]
+            console.log("concepts page: ", data.name, m[2]);
+            // if (data.type == 'union') {
+            data.attrs.forEach(prop => {
+                if (prop.doc == '') {
+                    delete prop.doc
+                }
+                if (prop.doc != undefined) {
+                    prop.doc = prop.doc.replace(/\n */g, " ")
+                }
+                prop.name = ('' + prop.name).replace(/"/g, '')
+                if (prop.type) {
+                    prop.type = prop.type.replace(/::\s/, '').replace(/\?$/, '')
+                }
+            });
+            data.attrs = data.attrs.reduce((a, v) => ({ ...a, [v.name]: v }), {})
+            delete data.attrs.undefined
+            concepts[data.name] = data;
+            next(context, {});
+        })
+        .done(function () {
+            // console.log(JSON.stringify(defines, null, 2));
+            saveData('./api/concepts.json', concepts)
         })
         .log(data => console.log('LOG', data))
         .error(data => console.log('ERR', data))
